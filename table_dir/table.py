@@ -1,12 +1,14 @@
 import csv
 import psycopg2
+import db_creds
+
 
 
 class TableCreator:
 
     def create_table(self):
         """Создает таблицу в БД postgres"""
-        with psycopg2.connect(host="localhost", database="postgres", user="postgres", password="Varda141190") as conn:
+        with psycopg2.connect(**db_creds.DB_CREDS) as conn:
             with conn.cursor() as cur:
                 create_table_employers_and_vacs = """CREATE TABLE IF NOT EXISTS employers_and_vacs
                 (emp_id int,
@@ -22,7 +24,7 @@ class TableCreator:
 
     def insert_data(self):
         """Заполняет таблицу в БД postgres данными о вакансиях и компаниях из csv-файла"""
-        with psycopg2.connect(host="localhost", database="postgres", user="postgres", password="Varda141190") as conn:
+        with psycopg2.connect(**db_creds.DB_CREDS) as conn:
             with conn.cursor() as cur:
                 postgres_insert_query_employers_and_vacs = """ INSERT INTO employers_and_vacs VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
                 with open('../vacancies_dir/vacancies.csv', mode="r", encoding='utf-8') as file:
@@ -30,3 +32,4 @@ class TableCreator:
                     for row in file_reader:
                         record_to_insert_employers_and_vacs = (row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
                         cur.execute(postgres_insert_query_employers_and_vacs, record_to_insert_employers_and_vacs)
+

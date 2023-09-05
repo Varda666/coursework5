@@ -5,15 +5,14 @@ import db_manager_dir.db_manager
 
 
 hh_api = vacancies_dir.vacancies.HeadHunterAPI()
-data = vacancies_dir.vacancies.HeadHunterAPI.get_vacancies(hh_api)
+data = hh_api.get_vacancies()
 vac_to_csv = vacancies_dir.vacancies.VacanciesToCsvFile()
-vacancies_dir.vacancies.VacanciesToCsvFile.add_vacancy_to_file(vac_to_csv, data)
+vac_to_csv.add_vacancy_to_file(data)
 tab_creator = table_dir.table.TableCreator()
-table_dir.table.TableCreator.create_table(tab_creator)
-table_dir.table.TableCreator.insert_data(tab_creator)
+tab_creator.create_table()
+tab_creator.insert_data()
 db_manager = db_manager_dir.db_manager.DBManager()
-data1 = db_manager_dir.db_manager.DBManager.connect_with_db(db_manager,
-                                                    db_manager_dir.db_manager.DBManager.get_companies_and_vacancies_count(db_manager))
+data1 = db_manager.connect_with_db(db_manager.get_companies_and_vacancies_count())
 print('Сортировка компаний по количеству вакансий')
 for row in data1:
     print(f'Компания {row[2]} - {row[0]}, количество вакансий {row[1]}')
