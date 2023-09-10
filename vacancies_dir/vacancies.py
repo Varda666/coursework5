@@ -35,7 +35,7 @@ class HeadHunterAPI():
 
     def _get_vacancies(self, page: int = 0) -> list[dict]:
         """Получает список всех вакансий с сайта hh.ru"""
-        payload = {"page": page, "per_page": 100}
+        payload = {"page": page, "per_page": 100, 'only_with_salary': True}
         url = 'https://api.hh.ru/vacancies'
         response = requests.get(url, params=payload)
         data = response.json()
@@ -48,7 +48,7 @@ class HeadHunterAPI():
             data = self._get_vacancies(page)
             for item in data:
                 salary = item['salary']
-                salary_from = salary.get('from', 0)
+                salary_from = salary.get('from', 0) or 0
 
                 vacancy = Vacancies(
                     emp_id=int(item["employer"].get('id', 0)),

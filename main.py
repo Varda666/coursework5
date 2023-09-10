@@ -37,6 +37,6 @@ for row in data4:
 print('Введите слово для поиска по названию вакансии')
 keyword = input()
 data5 = db_manager_dir.db_manager.DBManager.get_vacancies_with_keyword(db_manager, keyword)
-print('Выборка вакансий спо ключевому слову keyword')
+print(f'Выборка вакансий спо ключевому слову {keyword}')
 for row in data5:
     print(f'Компания {row[1]} - {row[0]}, зарплата от {row[2]}')

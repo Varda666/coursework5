@@ -1,11 +1,12 @@
 import psycopg2
+from db_creds import DB_CREDS
 
 
 class DBManager:
 
     def connect_with_db(self, postgres_req_employers_and_vacs):
         """Подключается к базе данных"""
-        with psycopg2.connect(host="localhost", database="postgres", user="postgres", password="Varda141190") as conn:
+        with psycopg2.connect(**DB_CREDS) as conn:
             with conn.cursor() as cur:
                 cur.execute(postgres_req_employers_and_vacs)
                 rows = cur.fetchall()
@@ -45,10 +46,10 @@ class DBManager:
 
     def get_vacancies_with_keyword(self, keyword):
         """получает список всех вакансий, в названии которых содержатся переданные в метод слова, например python"""
-        with psycopg2.connect(host="localhost", database="postgres", user="postgres", password="Varda141190") as conn:
+        with psycopg2.connect(**DB_CREDS) as conn:
             with conn.cursor() as cur:
-                postgres_req_employers_and_vacs = """SELECT * FROM employers_and_vacs 
-                WHERE vac_name LIKE '%(%s)%'"""
+                postgres_req_employers_and_vacs = f"""SELECT * FROM employers_and_vacs 
+                WHERE vac_name LIKE '%{keyword}%'"""
                 cur.execute(postgres_req_employers_and_vacs, keyword)
                 rows = cur.fetchall()
                 return rows
